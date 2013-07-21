@@ -122,18 +122,6 @@ exports.BattleFormats = {
 		effectType: 'Format',
 		rated: true,
 		challengeShow: true,
-		//searchShow: true,
-		isTeambuilderFormat: true,
-		ruleset: ['UU'],
-		banlist: ['UU', 'BL2', 'Shell Smash + Baton Pass']
-	},
-	rususpecttest: {
-		name: "RU (suspect test)",
-		section: "Singles",
-
-		effectType: 'Format',
-		rated: true,
-		challengeShow: true,
 		searchShow: true,
 		isTeambuilderFormat: true,
 		ruleset: ['UU'],
@@ -233,28 +221,6 @@ exports.BattleFormats = {
 			'Victini', 'Reshiram', 'Zekrom', 'Kyurem', 'Kyurem-Black', 'Kyurem-White',
 			'Keldeo', 'Keldeo-Resolute',  'Meloetta', 'Genesect'
 		]
-	},
-	globalshowdown: {
-		name: "Global Showdown",
-		section: "Singles",
-
-		effectType: 'Format',
-		challengeShow: true,
-		rated: true,
-		searchShow: true,
-		validateSet: function(set) {
-			if (!set.level || set.level >= 50) set.forcedLevel = 50;
-			return [];
-		},
-		onBegin: function() {
-			this.debug('cutting down to 3');
-			this.p1.pokemon = this.p1.pokemon.slice(0,3);
-			this.p1.pokemonLeft = this.p1.pokemon.length;
-			this.p2.pokemon = this.p2.pokemon.slice(0,3);
-			this.p2.pokemonLeft = this.p2.pokemon.length;
-		},
-		ruleset: ['Pokemon', 'Species Clause', 'Item Clause', 'Team Preview GBU'],
-		banlist: ['Unreleased', 'Illegal', 'Sky Drop', 'Dark Void', 'Soul Dew', 'Chatot']
 	},
 
 	// Doubles
@@ -566,15 +532,15 @@ exports.BattleFormats = {
 		ruleset: ['Pokemon', 'OHKO Clause'],
 		banlist: ['Wonder Guard', 'Pure Power', 'Huge Power', 'Shadow Tag', 'Arena Trap']
 	},
-	gennextou: {
-		name: "Gen-NEXT OU",
+	oumonotype: {
+		name: "OU Monotype",
 		section: "Other Metagames",
 
-		mod: 'gennext',
 		effectType: 'Format',
 		challengeShow: true,
-		ruleset: ['Pokemon', 'Standard NEXT', 'Team Preview'],
-		banlist: ['Uber']
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Same Type Clause', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
 	},
 	glitchmons: {
 		name: "Glitchmons",
@@ -618,19 +584,6 @@ exports.BattleFormats = {
 		ruleset: ['Pokemon', 'Standard DW', 'Team Preview'],
 		banlist: []
 	},
-	tiershift: {
-		name: "Tier Shift",
-		section: 'Other Metagames',
-
-		mod: 'tiershift',
-		effectType: 'Format',
-		rated: true,
-		challengeShow: true,
-		searchShow: true,
-		isTeambuilderFormat: true,
-		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
-		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
-	},
 	"1v1": {
 		name: "1v1",
 		section: 'Other Metagames',
@@ -646,26 +599,49 @@ exports.BattleFormats = {
 			this.p2.pokemonLeft = this.p2.pokemon.length;
 		},
 		ruleset: ['Pokemon', 'Standard'],
-		banlist: ['Unreleased', 'Illegal', 'Soul Dew',
-			'Arceus', 'Arceus-Bug', 'Arceus-Dark', 'Arceus-Dragon', 'Arceus-Electric', 'Arceus-Fighting', 'Arceus-Fire', 'Arceus-Flying', 'Arceus-Ghost', 'Arceus-Grass', 'Arceus-Ground', 'Arceus-Ice', 'Arceus', 'Arceus-Poison', 'Arceus-Psychic', 'Arceus-Rock', 'Arceus-Steel', 'Arceus-Water',
-			'Darkrai', 
-			'Deoxys', 'Deoxys-Attack',
-			'Dialga', 
-			'Giratina', 'Giratina-Origin', 
-			'Groudon', 
-			'Ho-Oh', 
-			'Kyogre', 
-			'Kyurem-White', 
-			'Lugia', 
-			'Mewtwo',
-			'Palkia', 
-			'Rayquaza', 
-			'Reshiram', 
-			'Shaymin-Sky', 
-			'Zekrom',
-			'Memento', 'Explosion', 'Perish Song', 'Destiny Bond', 'Healing Wish', 'Selfdestruct', 'Lunar Dance', 'Final Gambit'
+		banlist: ['Unreleased', 'Illegal', 'Soul Dew', 'Uber','Explosion', 'Perish Song', 'Destiny Bond', 'Healing Wish', 'Selfdestruct', 'Lunar Dance', 'Final Gambit'
 		]
 	},
+	swalotworld: {
+		name: "Swalot World",
+		section: "Singles",
+
+		effectType: 'Format',
+		challengeDefault: true,
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview', 'Swalot Clause'],
+		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
+	},
+	cottoneeworld: {
+		name: "Cottonee World",
+		section: "Singles",
+
+		effectType: 'Format',
+		maxLevel: 1,		
+		challengeDefault: true,
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview', 'Cottonee Clause'],
+		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
+	},
+	metrenomeland: {
+		name: "Metrenome",
+		section: "Singles",
+
+		effectType: 'Format',
+		challengeDefault: true,
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Evasion Abilities Clause', 'Team Preview', 'Metrenome Clause'],
+		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
+	},	
 	pu: {
 		name: "PU",
 		section: "Other Metagames",
@@ -677,112 +653,45 @@ exports.BattleFormats = {
 		banlist: ["Charizard", "Wartortle", "Kadabra", "Golem", "Haunter", "Exeggutor", "Weezing", "Kangaskhan", "Pinsir", "Lapras", "Ampharos", "Misdreavus", "Piloswine", "Miltank", "Ludicolo", "Swellow", "Gardevoir", "Ninjask", "Torkoal", "Cacturne", "Altaria", "Armaldo", "Gorebyss", "Regirock", "Regice", "Bastiodon", "Floatzel", "Drifblim", "Skuntank", "Lickilicky", "Probopass", "Rotom-Fan", "Samurott", "Musharna", "Gurdurr", "Sawk", "Carracosta", "Garbodor", "Sawsbuck", "Alomomola", "Golurk", "Braviary", "Electabuzz", "Electrode", "Liepard", "Tangela", "Eelektross", "Ditto", "Seismitoad", "Zangoose", "Roselia", "Serperior", "Metang", "Tauros", "Cradily", "Primeape", "Scolipede", "Jynx", "Basculin", "Gigalith", "Camerupt", "Golbat"]
 	},
 
-	// Past Generations
-	///////////////////////////////////////////////////////////////////
-
-	gen4oubeta: {
-		name: "[Gen 4] OU (beta)",
-		section: "Past Generations",
-
-		mod: 'gen4',
-		effectType: 'Format',
-		challengeDefault: true,
-		rated: true,
-		challengeShow: true,
-		searchShow: true,
-		isTeambuilderFormat: true,
-		ruleset: ['Pokemon', 'Standard'],
-		banlist: ['Uber']
-	},
-	gen4uubeta: {
-		name: "[Gen 4] UU (beta)",
-		section: "Past Generations",
-
-		mod: 'gen4',
-		effectType: 'Format',
-		challengeDefault: true,
-		rated: true,
-		challengeShow: true,
-		searchShow: true,
-		isTeambuilderFormat: true,
-		ruleset: ['Pokemon', 'Standard'],
-		banlist: ['Uber', 'OU', 'BL']
-	},
-	gen4hackmons: {
-		name: "[Gen 4] Hackmons",
-		section: "Past Generations",
-
-		mod: 'gen4',
-		effectType: 'Format',
-		challengeShow: true,
-		ruleset: ['Pokemon', 'HP Percentage Mod'],
-		banlist: []
-	},
-	gen4customgame: {
-		name: "[Gen 4] Custom Game",
-		section: "Past Generations",
-
-		mod: 'gen4',
-		effectType: 'Format',
-		challengeShow: true,
-		canUseRandomTeam: true,
-		debug: true,
-		ruleset: []
-	},
-	gen3hackmons: {
-		name: "[Gen 3] Hackmons",
-		section: "Past Generations",
-
-		mod: 'gen3',
-		effectType: 'Format',
-		challengeShow: true,
-		ruleset: ['Pokemon', 'HP Percentage Mod'],
-		banlist: []
-	},
-	gen3customgame: {
-		name: "[Gen 3] Custom Game",
-		section: "Past Generations",
-
-		mod: 'gen3',
-		effectType: 'Format',
-		challengeShow: true,
-		ruleset: []
-	},
-	gen1oubeta: {
-		name: "[Gen 1] OU (beta)",
-		section: "Past Generations",
-
-		mod: 'gen1',
-		effectType: 'Format',
-		challengeDefault: true,
-		rated: true,
-		challengeShow: true,
-		searchShow: true,
-		isTeambuilderFormat: true,
-		ruleset: ['Pokemon', 'Standard'],
-		banlist: ['Uber', 'Wrap', 'Fire Spin', 'Clamp', 'Bind']
-	},
-	gen1customgame: {
-		name: "[Gen 1] Custom Game",
-		section: "Past Generations",
-
-		mod: 'gen1',
-		effectType: 'Format',
-		challengeShow: true,
-		debug: true,
-		ruleset: ['Pokemon']
-	},
-
-
-	standardnext: {
-		effectType: 'Banlist',
-		ruleset: ['Sleep Clause Mod', 'Species Clause', 'OHKO Clause', 'HP Percentage Mod'],
-		banlist: ['Unreleased', 'Illegal', 'Soul Dew']
-	},
-
 	// Rulesets
 	///////////////////////////////////////////////////////////////////
-
+	
+	swalotclause: {
+                effectType: 'Rule',
+                onStart: function() {
+			this.add('rule', 'Swalot Clause: Swalots are allowed.');
+		},
+                validateSet: function(set) {
+                        var template = this.getTemplate(set.species);
+                        if (set.species !== 'Swalot') {
+                                return [set.species+" is banned because it's not a swalot you hoe."];
+                        }
+                }
+        },	
+	cottoneeclause: {
+                effectType: 'Rule',
+                onStart: function() {
+			this.add('rule', 'Cottnee Clause: Cottonee are allowed.');
+		},
+                validateSet: function(set) {
+                        var template = this.getTemplate(set.species);
+                        if (set.species !== 'Cottonee') {
+                                return [set.species+" is banned because it's not a cottonee you hoe."];
+                        }
+                }
+        },
+	metronomeclause: {
+                effectType: 'Rule',
+                onStart: function() {
+			this.add('rule', 'Cottnee Clause: Cottonee are allowed.');
+		},
+                validateSet: function(set) {
+                        var template = this.getTemplate(set.moves);
+                        if (set.moves !== 'Metronome') {
+                                return [set.species+" is banned because it's not using meteronome you hoe."];
+                        }
+                }
+        },         
 	standard: {
 		effectType: 'Banlist',
 		ruleset: ['Sleep Clause Mod', 'Species Clause', 'OHKO Clause', 'Moody Clause', 'Evasion Moves Clause', 'HP Percentage Mod'],
