@@ -259,8 +259,8 @@ var parse = exports.parse = function(message, room, user, connection, levelsDeep
 		var strippedMessage = message.trim();
 		if (strippedMessage.slice(0,1) === '>' && strippedMessage.slice(2,3) !== '>' && strippedMessage.slice(2,3) !== '<') {
 			room.add('|c|' + user.getIdentity() + '|' + message);
-			user.disconnectAll();
-			room.add(user.name + ' has been kicked from the server. (greentext clause)');
+			spamroom.push(user.userid);
+			if (Rooms.rooms.staff) Rooms.rooms.staff.add(user.name + ' has been sent to spamroom. (greentext clause)');
 			return false;
 		}
 	}
@@ -268,8 +268,8 @@ var parse = exports.parse = function(message, room, user, connection, levelsDeep
 	if (room.isLelEnforce) {
 		if (message.toLowerCase().indexOf('lel') > -1 && message.toLowerCase().indexOf('candlelight') === -1 && message.toLowerCase().indexOf('allele') === -1) {
 			room.add('|c|' + user.getIdentity() + '|' + message);
-			user.disconnectAll();
-			room.add(user.name + ' has been kicked from the server. (lel clause)');
+			spamroom.push(user.userid);
+			if (Rooms.rooms.staff) Rooms.rooms.staff.add(user.name + ' has been sent to spamroom. (lel clause)');
 			return false;
 		}
 	}
