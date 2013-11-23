@@ -10,7 +10,7 @@ exports.Formats = [
 		name: "OU (beta)",
 		section: "XY Singles",
 
-		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		ruleset: ['Pokemon', 'Standard', 'Team Preview'],
 		noPokebank: true,
 		banlist: ['Uber', 'Soul Dew']
 	},
@@ -30,6 +30,25 @@ exports.Formats = [
 		ruleset: ['Pokemon', 'Standard', 'Team Preview', 'Little Cup'],
 		noPokebank: true,
 		banlist: ['Sonicboom', 'Dragon Rage', 'Scyther']
+	},
+	{
+		name: "XY Battle Spot Singles (beta)",
+		section: "XY Singles",
+
+		onBegin: function() {
+			this.debug('cutting down to 3');
+			this.p1.pokemon = this.p1.pokemon.slice(0,3);
+			this.p1.pokemonLeft = this.p1.pokemon.length;
+			this.p2.pokemon = this.p2.pokemon.slice(0,3);
+			this.p2.pokemonLeft = this.p2.pokemon.length;
+		},
+		maxForcedLevel: 50,
+		ruleset: ['Pokemon', 'Standard GBU', 'Team Preview GBU'],
+		noPokebank: true,
+		banlist: [], // The neccessary bans are in Standard GBU
+		validateTeam: function(team, format) {
+			if (team.length < 3) return ['You must bring at least 3 Pokemon.'];
+		}
 	},
 	{
 		name: "XY Battle Spot Special (beta)",
@@ -60,7 +79,7 @@ exports.Formats = [
 		name: "Pokebank OU (beta)",
 		section: "XY Singles",
 
-		ruleset: ['Pokemon', 'Standard Pokebank', 'Evasion Abilities Clause', 'Team Preview'],
+		ruleset: ['Pokemon', 'Standard Pokebank', 'Team Preview'],
 		banlist: ['Uber', 'Soul Dew']
 	},
 	{
@@ -79,13 +98,6 @@ exports.Formats = [
 		banlist: ['Sonicboom', 'Dragon Rage', 'Scyther']
 	},
 	{
-		name: "CAP (beta)",
-		section: "XY Singles",
-
-		ruleset: ['CAP Pokemon', 'Standard Pokebank', 'Evasion Abilities Clause', 'Team Preview'],
-		banlist: ['Uber']
-	},
-	{
 		name: "Custom Game",
 		section: "XY Singles",
 
@@ -101,6 +113,14 @@ exports.Formats = [
 	// BW2 Singles
 	///////////////////////////////////////////////////////////////////
 
+	{
+		name: "[Gen 5] CAP Cawmodore Playtest",
+		section: "BW2 Singles",
+
+		mod: 'gen5',
+		ruleset: ['CAP Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew', "Tomohawk", "Necturna", "Mollux", "Aurumoth", "Malaconda", "Syclant", "Revenankh", "Pyroak", "Fidgit", "Stratagem", "Arghonaut", "Kitsunoh", "Cyclohm", "Colossoil", "Krilowatt", "Voodoom"]
+	},
 	{
 		name: "[Gen 5] Random Battle",
 		section: "BW2 Singles",
@@ -402,6 +422,28 @@ exports.Formats = [
 
 		team: 'randomSeasonal',
 		ruleset: ['HP Percentage Mod', 'Sleep Clause Mod']
+	},
+	{
+		name: "Inverse Battle",
+		section: "OM of the Month",
+
+		mod: 'inverse',
+		ruleset: ['Pokemon', 'Standard', 'Team Preview'],
+		banlist: [
+			'Ho-Oh',
+			'Kangaskhanite',
+			'Arceus', 'Arceus-Bug', 'Arceus-Dark', 'Arceus-Dragon', 'Arceus-Electric', 'Arceus-Fairy', 'Arceus-Fighting', 'Arceus-Fire', 'Arceus-Flying', 'Arceus-Ghost', 'Arceus-Grass', 'Arceus-Ground', 'Arceus-Ice', 'Arceus-Poison', 'Arceus-Psychic', 'Arceus-Rock', 'Arceus-Steel', 'Arceus-Water',
+			'Mewtwo',
+			'Xerneas'
+		]
+	},
+	{
+		name: "CAP (beta)",
+		section: "Other Metagames",
+
+		searchShow: false,
+		ruleset: ['CAP Pokemon', 'Standard Pokebank', 'Team Preview'],
+		banlist: ['Uber', 'Cawmodore', 'Soul Dew']
 	},
 	{
 		name: "Challenge Cup",

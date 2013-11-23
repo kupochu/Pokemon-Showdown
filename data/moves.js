@@ -450,7 +450,7 @@ exports.BattleMovedex = {
 				for (var i=0; i<pokemon.moves.length; i++) {
 					var move = pokemon.moves[i];
 					var noAssist = {
-						assist:1, bestow:1, chatter:1, circlethrow:1, copycat:1, counter:1, covet:1, destinybond:1, detect:1, dragontail:1, endure:1, feint:1, focuspunch:1, followme:1, helpinghand:1, mefirst:1, metronome:1, mimic:1, mirrorcoat:1, mirrormove:1, naturepower:1, protect:1, ragepowder:1, sketch:1, sleeptalk:1, snatch:1, struggle:1, switcheroo:1, thief:1, transform:1, trick:1
+						assist:1, bestow:1, bounce:1, chatter:1, circlethrow:1, copycat:1, counter:1, covet:1, destinybond:1, detect:1, dig:1, dive:1, dragontail:1, endure:1, feint:1, fly:1, focuspunch:1, followme:1, helpinghand:1, mefirst:1, metronome:1, mimic:1, mirrorcoat:1, mirrormove:1, naturepower:1, phantomforce:1, protect:1, ragepowder:1, shadowforce:1, sketch:1, sleeptalk:1, snatch:1, struggle:1, switcheroo:1, thief:1, transform:1, trick:1
 					};
 					if (move && !noAssist[move]) {
 						moves.push(move);
@@ -1057,7 +1057,9 @@ exports.BattleMovedex = {
 		priority: 0,
 		isBounceable: true,
 		onHit: function(target) {
-			target.addVolatile('trapped');
+			if (!target.addVolatile('trapped')) {
+				this.add('-fail', target);
+			}
 		},
 		secondary: false,
 		target: "normal",
@@ -1783,6 +1785,7 @@ exports.BattleMovedex = {
 		name: "Confide",
 		pp: 20,
 		priority: 0,
+		isNotProtectable: true,
 		boosts: {
 			spa: -1
 		},
@@ -4526,8 +4529,9 @@ exports.BattleMovedex = {
 		priority: 0,
 		isBounceable: true,
 		onHit: function(target) {
-			this.add('-start', target, 'typechange', 'Grass');
-			target.types = ['Grass'];
+			if (target.hasType("Grass")) return false;
+			target.types = target.types.slice(0,2).concat(["Grass"]);
+			this.add("-start", target, "typechange", target.types.join("/"), "[from] move: Forest's Curse");
 		},
 		secondary: false,
 		target: "normal",
@@ -5144,7 +5148,8 @@ exports.BattleMovedex = {
 			onStart: function(target, source) {
 				this.add('-fieldstart', 'move: Grassy Terrain');
 			},
-			onResidualOrder: 7,
+			onResidualOrder: 5,
+			onResidualSubOrder: 2,
 			onResidual: function(battle) {
 				this.debug('onResidual battle');
 				for (var s in battle.sides) {
@@ -6714,7 +6719,7 @@ exports.BattleMovedex = {
 		id: "infestation",
 		isViable: true,
 		name: "Infestation",
-		pp: 35,
+		pp: 20,
 		priority: 0,
 		isContact: true,
 		volatileStatus: 'partiallytrapped',
@@ -7536,12 +7541,12 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 0,
 		category: "Status",
-		desc: "For 5 turns, the held items of all active Pokemon have no effect. During the effect, Fling and Natural Gift are prevented from being used by all active Pokemon. If this move is used during the effect, the effect ends. Priority -7.",
+		desc: "For 5 turns, the held items of all active Pokemon have no effect. During the effect, Fling and Natural Gift are prevented from being used by all active Pokemon. If this move is used during the effect, the effect ends.",
 		shortDesc: "For 5 turns, all held items have no effect.",
 		id: "magicroom",
 		name: "Magic Room",
 		pp: 10,
-		priority: -7,
+		priority: 0,
 		onHitField: function(target, source, effect) {
 			if (this.pseudoWeather['magicroom']) {
 				this.removePseudoWeather('magicroom', source, effect, '[of] '+source);
@@ -7783,13 +7788,13 @@ exports.BattleMovedex = {
 				this.add('-singleturn', target, 'Mat Block');
 			},
 			onTryHitPriority: 3,
-			onTryHit: function(target, source, move) {
+			onAllyTryHit: function(target, source, move) {
 				if (move.breaksProtect) {
 					target.removeVolatile('Mat Block');
 					return;
 				}
 				if (move && (move.target === 'self' || move.category === 'Status')) return;
-				this.add('-activate', target, 'Mat Block');
+				this.add('-activate', target, 'Mat Block', move.name);
 				var lockedmove = source.getVolatile('lockedmove');
 				if (lockedmove) {
 					// Outrage counter is reset
@@ -7856,7 +7861,9 @@ exports.BattleMovedex = {
 		priority: 0,
 		isBounceable: true,
 		onHit: function(target) {
-			target.addVolatile('trapped');
+			if (!target.addVolatile('trapped')) {
+				this.add('-fail', target);
+			}
 		},
 		secondary: false,
 		target: "normal",
@@ -9001,6 +9008,7 @@ exports.BattleMovedex = {
 		name: "Parting Shot",
 		pp: 20,
 		priority: 0,
+		isSoundBased: true,
 		selfSwitch: true,
 		boosts: {
 			atk: -1,
@@ -9443,8 +9451,16 @@ exports.BattleMovedex = {
 		isBounceable: true,
 		volatileStatus: 'powder',
 		effect: {
+			duration: 1,
 			onStart: function(target) {
 				this.add('-start', target, 'Powder');
+			},
+			onBeforeMove: function(pokemon, target, move) {
+				if (move.type === 'Fire') {
+					this.add('-activate', pokemon, 'Powder');
+					this.directDamage(Math.floor(pokemon.maxhp / 4) + 1);
+					return false;
+				}
 			}
 		},
 		secondary: false,
@@ -10329,7 +10345,7 @@ exports.BattleMovedex = {
 		pp: 15,
 		priority: 0,
 		onHit: function(target, source) {
-			this.add('-start', source, 'typechange', target.types.join(', '), '[from] move: Reflect Type', '[of] '+target);
+			this.add('-start', source, 'typechange', target.types.join('/'), '[from] move: Reflect Type', '[of] '+target);
 			source.types = target.types;
 		},
 		secondary: false,
@@ -12336,7 +12352,9 @@ exports.BattleMovedex = {
 		priority: 0,
 		isBounceable: true,
 		onHit: function(target) {
-			target.addVolatile('trapped');
+			if (!target.addVolatile('trapped')) {
+				this.add('-fail', target);
+			}
 		},
 		secondary: false,
 		target: "normal",
@@ -12859,7 +12877,7 @@ exports.BattleMovedex = {
 					this.debug('sub bypass: self hit');
 					return;
 				}
-				if (move.notSubBlocked || source.ability === 'infiltrator' && this.gen >= 6) {
+				if (move.notSubBlocked || (source.ability === 'infiltrator' || move.isSoundBased) && this.gen >= 6) {
 					return;
 				}
 				if (move.category === 'Status') {
@@ -13728,6 +13746,12 @@ exports.BattleMovedex = {
 		name: "Toxic",
 		pp: 10,
 		priority: 0,
+		onModifyMove: function(move, pokemon) {
+			if (pokemon.hasType('Poison')) {
+				move.accuracy = true;
+				move.alwaysHit = true;
+			}
+		},
 		status: 'tox',
 		secondary: false,
 		target: "normal",
@@ -13872,8 +13896,9 @@ exports.BattleMovedex = {
 		priority: 0,
 		isBounceable: true,
 		onHit: function(target) {
-			this.add('-start', target, 'typechange', 'Ghost');
-			target.types = ['Ghost'];
+			if (target.hasType('Ghost')) return false;
+			target.types = target.types.slice(0,2).concat(['Ghost']);
+			this.add('-start', target, 'typechange', target.types.join('/'), '[from] move: Trick-or-Treat');
 		},
 		secondary: false,
 		target: "normal",
@@ -14688,12 +14713,12 @@ exports.BattleMovedex = {
 		accuracy: true,
 		basePower: 0,
 		category: "Status",
-		desc: "For 5 turns, all active Pokemon have their Defense and Special Defense stats swapped. Stat stage changes are unaffected. If this move is used during the effect, the effect ends. Priority -7.",
+		desc: "For 5 turns, all active Pokemon have their Defense and Special Defense stats swapped. Stat stage changes are unaffected. If this move is used during the effect, the effect ends.",
 		shortDesc: "For 5 turns, all Defense and Sp. Def stats switch.",
 		id: "wonderroom",
 		name: "Wonder Room",
 		pp: 10,
-		priority: -7,
+		priority: 0,
 		onHitField: function(target, source, effect) {
 			if (this.pseudoWeather['wonderroom']) {
 				this.removePseudoWeather('wonderroom', source, effect, '[of] '+source);

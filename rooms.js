@@ -331,11 +331,7 @@ var GlobalRoom = (function() {
 		if (user) {
 			user.sendTo(this, message);
 		} else {
-			for (var i in this.users) {
-				user = this.users[i];
-				if(!(!user.sendTo))
-					user.sendTo(this, message);
-			}
+			Sockets.channelBroadcast(this.id, message);
 		}
 	};
 	GlobalRoom.prototype.sendAuth = function(message) {
@@ -761,9 +757,7 @@ var BattleRoom = (function() {
 		if (user) {
 			user.sendTo(this, message);
 		} else {
-			for (var i in this.users) {
-				this.users[i].sendTo(this, message);
-			}
+			Sockets.channelBroadcast(this.id, '>'+this.id+'\n'+message);
 		}
 	};
 	BattleRoom.prototype.tryExpire = function() {
@@ -1345,9 +1339,8 @@ var ChatRoom = (function() {
 		if (user) {
 			user.sendTo(this, message);
 		} else {
-			for (var i in this.users) {
-				this.users[i].sendTo(this, message);
-			}
+			if (this.id !== 'lobby') message = '>'+this.id+'\n'+message;
+			Sockets.channelBroadcast(this.id, message);
 		}
 	};
 	ChatRoom.prototype.sendAuth = function(message) {
@@ -1401,7 +1394,7 @@ var ChatRoom = (function() {
 
 			log.push(logText);
 		}
-		
+
 		return log;
 	};
 	ChatRoom.prototype.getModchatNote = function (noNewline) {

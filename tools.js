@@ -485,6 +485,8 @@ module.exports = (function () {
 					if (!lset || template.speciesid === 'smeargle') {
 						lset = template.learnset['sketch'];
 						sketch = true;
+						// Chatter, Struggle and Magikarp's Revenge cannot be sketched
+						if (move in {'chatter':1, 'struggle':1, 'magikarpsrevenge':1}) return true;
 					}
 					if (typeof lset === 'string') lset = [lset];
 
@@ -495,8 +497,6 @@ module.exports = (function () {
 						if (learned.substr(0,2) in {'4L':1,'5L':1,'6L':1}) {
 							// gen 4-6 level-up moves
 							if (level >= parseInt(learned.substr(2),10)) {
-								// Chatter and Struggle cannot be sketched
-								if (sketch && (move === 'chatter' || move === 'struggle')) return true;
 								// we're past the required level to learn it
 								return false;
 							}
@@ -531,7 +531,7 @@ module.exports = (function () {
 								}
 								var eggGroups = template.eggGroups;
 								if (!eggGroups) continue;
-								if (eggGroups[0] === 'No Eggs') eggGroups = this.getTemplate(template.evos[0]).eggGroups;
+								if (eggGroups[0] === 'Undiscovered') eggGroups = this.getTemplate(template.evos[0]).eggGroups;
 								var atLeastOne = false;
 								var fromSelf = (learned.substr(1) === 'Eany');
 								learned = learned.substr(0,2);
@@ -741,6 +741,7 @@ module.exports = (function () {
 		}
 		var teamHas = {};
 		for (var i=0; i<team.length; i++) {
+			if (!team[i]) return ["You sent invalid team data. If you're not using a custom client, please report this as a bug."];
 			var setProblems = this.validateSet(team[i], format, teamHas);
 			if (setProblems) {
 				problems = problems.concat(setProblems);
@@ -980,10 +981,10 @@ module.exports = (function () {
 					isHidden = false;
 				}
 			}
-			if (isHidden && template.gender && lsetData.sourcesBefore < 5) {
+			if (isHidden && lsetData.sourcesBefore < 5) {
 				if (!lsetData.sources) {
 					problems.push(name+" has a hidden ability - it can't have moves only learned before gen 5.");
-				} else {
+				} else if (template.gender) {
 					var compatibleSource = false;
 					for (var i=0,len=lsetData.sources.length; i<len; i++) {
 						if (lsetData.sources[i].charAt(1) === 'E' || (lsetData.sources[i].substr(0,2) === '5D' && set.level >= 10)) {
