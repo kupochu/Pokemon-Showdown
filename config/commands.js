@@ -628,8 +628,9 @@ var commands = exports.commands = {
 		this.sendReplyBox('+ <b>Voice</b> - The above, and they can use ! commands like !groups, and talk during moderated chat<br />' +
 			'% <b>Driver</b> - The above, and they can also mute and lock users and check for alts<br />' +
 			'@ <b>Moderator</b> - The above, and they can ban users<br />' +
-			'&amp; <b>Leader</b> - The above, and they can promote moderators and force ties<br />'+
-			'~ <b>Administrator</b> - They can do anything, like change what this message says');
+			'&amp; <b>Leader</b> - The above, and they can promote moderators and force ties<br />' +
+			'~ <b>Administrator</b> - They can do anything, like change what this message says<br />' +
+			'# <b>Room Owner</b> - They are administrators of the room and can almost totally control it');
 	},
 
 	git: 'opensource',
@@ -1275,7 +1276,7 @@ var commands = exports.commands = {
 		}
 		if (target === '%' || target === 'modlog') {
 			matched = true;
-			this.sendReply('/modlog [n] - If n is a number or omitted, display the last n lines of the moderator log. Defaults to 15. If n is not a number, search the moderator log for "n". Requires: % @ & ~');
+			this.sendReply('/modlog [roomid|all], [n] - Roomid defaults to current room. If n is a number or omitted, display the last n lines of the moderator log. Defaults to 15. If n is not a number, search the moderator log for "n" on room\'s log [roomid]. If you set [all] as [roomid], searches for "n" on all rooms\'s logs. Requires: % @ & ~');
 		}
 		if (target === "%" || target === 'kickbattle ') {
 			matched = true;
