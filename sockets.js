@@ -124,6 +124,7 @@ if (cluster.isMaster) {
 	}
 	try {
 		(function() {
+			var fs = require('fs');
 			var nodestatic = require('node-static');
 			var cssserver = new nodestatic.Server('./config');
 			var avatarserver = new nodestatic.Server('./config/avatars');
