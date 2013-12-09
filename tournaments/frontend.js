@@ -455,8 +455,8 @@ var Tournament = (function () {
 	return Tournament;
 })();
 
-CommandParser.commands.t0ur = 'tournament';
-CommandParser.commands.t0urs = 'tournament';
+CommandParser.commands.tour = 'tournament';
+CommandParser.commands.tours = 'tournament';
 CommandParser.commands.tournaments = 'tournament';
 CommandParser.commands.tournament = function (paramString, room, user) {
 	var cmdParts = paramString.split(' ');

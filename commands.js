@@ -66,7 +66,7 @@ var commands = exports.commands = {
 		if(!target) return this.sendReply('/hug needs a target.');
 		return this.parse('/me hugs ' + target + '.');
 	},
-	
+
 	slap: function(target, room, user){
 		if(!target) return this.sendReply('/slap needs a target.');
 		return this.parse('/me slaps ' + target + ' with a large trout.');
@@ -779,7 +779,8 @@ var commands = exports.commands = {
 		if (!this.can('mute', null, room)) return;
 
 		if (!room.isPrivate || !room.auth) return this.sendReply('You can only do this in unofficial private rooms.');
-		target = tour.splint(target);
+		target = target.split(',');
+		target = target.map(function (t) { return t.trim(); });
 		var picSize = '';
 		if (target[1]) {
 			if (target[1] < 1 || target[1] > 100) return this.sendReply('Size must be between 1 and 100.');
@@ -813,7 +814,7 @@ var commands = exports.commands = {
 
 		return this.sendReply('Message "' + message + '" sent to ' + targetUser + '.');
 	},
-	
+
 	impersonate:'imp',
 	imp: function(target, room, user) {
 		if (!user.can('broadcast')) return this.sendReply('/imp - Access denied.');
@@ -829,7 +830,7 @@ var commands = exports.commands = {
 		if(target.indexOf('/announce') == 0 || target.indexOf('/warn') == 0 || target.indexOf('/data')==0)
 			return this.sendReply('You cannot use this to make a user announce/data/warn in imp.');
 		room.add('|c|'+targetUser.getIdentity()+'|'+ target + ' ``**(imp by '+ user.getIdentity() + ')**``');
-		
+
 	},
 
 	/*
@@ -1640,9 +1641,6 @@ var commands = exports.commands = {
 			try {
 				CommandParser.uncacheTree('./command-parser.js');
 				CommandParser = require('./command-parser.js');
-
-				CommandParser.uncacheTree('./tour.js');
-				tour = require('./tour.js').tour(tour);
 
 				var runningTournaments = Tournaments.tournaments;
 				CommandParser.uncacheTree('./tournaments/frontend.js');
@@ -2486,7 +2484,7 @@ function htmlfix(target){
 		while(target.indexOf(fixings[u]) != -1)
 			target = target.substring(0, target.indexOf(fixings[u])) +'< '+ target.substring(target.indexOf(fixings[u])+1);
 	}
-	
+
 	return target;
-	
+
 }
