@@ -1581,6 +1581,39 @@ var commands = exports.commands = {
 		}
 		this.privateModCommand("(" + user.name + " has removed from the spamroom user list: " + targets.join(", ") + ")");
 	},
+	
+	helixfossil: 'm8b',
+	helix: 'm8b',
+	magic8ball: 'm8b',
+	m8b: function(target, room, user) {
+		if (!this.canBroadcast()) return;
+		var rand = Math.floor(20 * Math.random()) + 1;
+		var result = '';
+
+		switch (rand) {
+	 		case 1: result = "Signs point to yes."; break;
+	  		case 2: result = "Yes."; break;
+			case 3: result = "Reply hazy, try again."; break;
+			case 4: result = "Without a doubt."; break;
+			case 5: result = "My sources say no."; break;
+			case 6: result = "As I see it, yes."; break;
+			case 7: result = "You may rely on it."; break;
+			case 8: result = "Concentrate and ask again."; break;
+			case 9: result = "Outlook not so good."; break;
+			case 10: result = "It is decidedly so."; break;
+			case 11: result = "Better not tell you now."; break;
+			case 12: result = "Very doubtful."; break;
+			case 13: result = "Yes - definitely."; break;
+			case 14: result = "It is certain."; break;
+			case 15: result = "Cannot predict now."; break;
+			case 16: result = "Most likely."; break;
+			case 17: result = "Ask again later."; break;
+			case 18: result = "My reply is no."; break;
+			case 19: result = "Outlook good."; break;
+			case 20: result = "Don't count on it."; break;
+		}	
+		return this.sendReplyBox(''+result+'');
+	},
 
 	customavatars: 'customavatar',
 	customavatar: (function () {
